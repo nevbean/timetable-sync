@@ -1,0 +1,23 @@
+name: Sync UTS Timetable to Neocities
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # runs every hour, on the hour (UTC)
+  workflow_dispatch: {}    # lets you click "Run workflow" manually to test
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run sync script
+        run: node sync-timetable.js
+        env:
+          NEOCITIES_API_KEY: ${{ secrets.NEOCITIES_API_KEY }}
