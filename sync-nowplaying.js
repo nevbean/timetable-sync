@@ -36,6 +36,9 @@ async function main() {
   let payload;
   if (res.status === 204) {
     payload = { playing: false };
+ } else if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`Spotify API error ${res.status}: ${errText}`);
   } else {
     const data = await res.json();
     if (data && data.item) {
